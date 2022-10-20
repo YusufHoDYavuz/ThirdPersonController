@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -48,17 +48,19 @@ public class ThirdPersonMovement : MonoBehaviour
         }
 
 
-        //Jump(); COMING SOON
+        Jump();
         AnimInput();
     }
 
     void Jump()
     {
+
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            velocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravity);
+            anim.SetTrigger("isJump");
+            StartCoroutine(jumpFast());
         }
-        
+
         isGrounded = Physics.CheckSphere(ground.position, distance, mask);
 
         if (isGrounded && velocity.y < 0)
@@ -69,6 +71,12 @@ public class ThirdPersonMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         cc.Move(velocity * Time.deltaTime);
 
+    }
+
+    IEnumerator jumpFast()
+    {
+        yield return new WaitForSeconds(0.40f);
+        velocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravity);
     }
 
     void AnimInput()
