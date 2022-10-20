@@ -48,6 +48,7 @@ public class ThirdPersonMovement : MonoBehaviour
         }
 
 
+       
         Jump();
         AnimInput();
     }
@@ -55,7 +56,7 @@ public class ThirdPersonMovement : MonoBehaviour
     void Jump()
     {
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !Input.GetKey(KeyCode.W))
         {
             anim.SetTrigger("isJump");
             StartCoroutine(jumpFast());
@@ -95,6 +96,17 @@ public class ThirdPersonMovement : MonoBehaviour
         {
             anim.SetBool("isRun", false);
             speed = 1;
+        }
+
+        if (Input.GetKey(KeyCode.W) && isGrounded && Input.GetKeyDown(KeyCode.Space))
+        {
+            anim.SetTrigger("isJumpForward");
+            jumpHeight = 0.5f;
+            velocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravity);
+        }
+        else
+        {
+            jumpHeight = 0.75f;
         }
 
     }
